@@ -153,7 +153,7 @@ write.xlsx(
 # ===========================
 
 ccp <- read.csv(
-    "D:/OneDrive/WORK/2021-003-CEPAL-Bioeconomia_CR/datos_insumos/ccp.csv",
+    "ccp.csv",
     header=TRUE,
     sep=",",
     colClasses = c("character")
@@ -165,5 +165,5 @@ ccp <- ccp[-j,]
 
 write.csv(
     ccp,
-    "D:/OneDrive/WORK/2021-003-CEPAL-Bioeconomia_CR/datos_insumos/CPC21.csv"
+    "CPC21.csv"
 )
