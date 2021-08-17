@@ -152,18 +152,18 @@ write.xlsx(
 # Clasificación internacional
 # ===========================
 
-ccp <- read.csv(
-    "ccp.csv",
-    header=TRUE,
-    sep=",",
-    colClasses = c("character")
-    )
-
-j <- which(ccp$CPC5.digits == "")
-
-ccp <- ccp[-j,]
-
-write.csv(
-    ccp,
-    "CPC21.csv"
-)
+# ccp <- read.csv(
+#     "ccp.csv",
+#     header=TRUE,
+#     sep=",",
+#     colClasses = c("character")
+#     )
+# 
+# j <- which(ccp$CPC5.digits == "")
+# 
+# ccp <- ccp[-j,]
+# 
+# write.csv(
+#     ccp,
+#     "CPC21.csv"
+# )
