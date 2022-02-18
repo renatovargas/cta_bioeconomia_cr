@@ -3,8 +3,8 @@
 # Banco Central de Costa Rica
 # Estudio exploratorio para la elaboración de una 
 # Cuenta Satélite de Bioeconomía para Costa Rica
-# Supervisor CEPAL: Adrián Rodríguez
-# Supervisora BCR: Irene Alvarado
+# Supervisor CEPAL: Adrián Rodríguez, Paul Wander
+# Supervisión BCCR: Irene Alvarado, Mónica Rodríguez
 # Consultor: Renato Vargas
 
 # ======================================================
@@ -16,7 +16,7 @@
 # Ubicación
 
 rm(list = ls())
-wd <- "D:/github/cta_bioeconomia_cr/codigo_datos/data"
+wd <- "C:/Users/renato/GitHub/cta_bioeconomia_cr/codigo_datos/data"
 setwd(wd)
 
 # Librerías
@@ -51,9 +51,9 @@ colnames(oferta) <- ncolumnas
 # no tienen desagregación en "Participación Extranjera" ni "Control
 # Doméstico". Esas deben incluirse pues son 100% control doméstico
 # y no se encuentran en la lista a continuación.
-# Este paso manual podría omitirse si el COU replicara el patrón 
+# [ Este paso manual podría omitirse si el COU replicara el patrón 
 # "Total", "Part. Extr", "Control Dom" siempre a través de una secuencia
-# generada con la función seq().
+# generada con la función seq().]
 
 of_omitir_columnas <- c(
     1,4,7,10,13,16,19,22,25,28,31,34,37,40,43,46,49,52,55,58,
@@ -121,48 +121,6 @@ ut_omitir_filas <- c(
 utilizacion <- utilizacion[-ut_omitir_filas,-ut_omitir_columnas]
 
 
-# ==========================
-# Ingesta de datos de Empleo
-# ==========================
-
-empleo <- as.matrix(read_excel(
-    "COU18.xlsx", 
-    range = "'COU 2018'!C453:PG458",
-    col_names = FALSE,
-    col_types = "numeric",
-    progress = TRUE
-))
-
-nfilas <- c("P01", "P02", "P03", "P04", "P05", "P06")
-ncolumnas <- c(sprintf("uc%03d", seq(1,dim(empleo)[2]) ))
-rownames(empleo) <- nfilas
-colnames(empleo) <- ncolumnas
-
-# Removemos las que no aplican
-
-e_omitir_columnas  <- c(
-    1,4,7,10,13,16,19,22,25,28,31,34,37,40,43,46,49,52,55,58,
-    61,64,67,70,73,76,79,82,85,88,91,94,97,100,103,107,110,113,
-    117,121,124,127,131,134,137,141,148,151,154,158,161,164,168,
-    171,176,179,182,185,188,191,194,197,200,203,206,209,212,215,
-    218,221,224,227,230,233,237,240,244,247,250,254,257,260,263,
-    266,269,272,275,278,281,284,288,292,295,298,301,304,307,310,
-    313,316,320,323,326,329,332,335,338,341,344,347,350,353,356,
-    359,360,361,362,365,368,371,374,377,380,383,384,385,386,389,
-    392,395,398,401,404,407,410,413,416,417,418,419,420,421)
-
-empleo <- empleo[,-e_omitir_columnas]
-
-empleo_bd <- melt(empleo)
-
-write.xlsx(
-    empleo_bd,
-    "empleo.xlsx",
-    rowNames=TRUE,
-    colnames=FALSE,
-    overwrite = TRUE,
-    asTable = FALSE
-)
 
 # ===============================================
 # Creación de base de datos Flat File para el COU
@@ -191,6 +149,50 @@ write.xlsx(
     overwrite = TRUE,
     asTable = FALSE
     )
+
+# ==========================
+# Ingesta de datos de Empleo
+# ==========================
+
+empleo <- as.matrix(read_excel(
+  "COU18.xlsx", 
+  range = "'COU 2018'!C453:PG458",
+  col_names = FALSE,
+  col_types = "numeric",
+  progress = TRUE
+))
+
+nfilas <- c("P01", "P02", "P03", "P04", "P05", "P06")
+ncolumnas <- c(sprintf("uc%03d", seq(1,dim(empleo)[2]) ))
+rownames(empleo) <- nfilas
+colnames(empleo) <- ncolumnas
+
+# Removemos las que no aplican
+
+e_omitir_columnas  <- c(
+  1,4,7,10,13,16,19,22,25,28,31,34,37,40,43,46,49,52,55,58,
+  61,64,67,70,73,76,79,82,85,88,91,94,97,100,103,107,110,113,
+  117,121,124,127,131,134,137,141,148,151,154,158,161,164,168,
+  171,176,179,182,185,188,191,194,197,200,203,206,209,212,215,
+  218,221,224,227,230,233,237,240,244,247,250,254,257,260,263,
+  266,269,272,275,278,281,284,288,292,295,298,301,304,307,310,
+  313,316,320,323,326,329,332,335,338,341,344,347,350,353,356,
+  359,360,361,362,365,368,371,374,377,380,383,384,385,386,389,
+  392,395,398,401,404,407,410,413,416,417,418,419,420,421)
+
+empleo <- empleo[,-e_omitir_columnas]
+
+empleo_bd <- melt(empleo)
+
+write.xlsx(
+  empleo_bd,
+  "empleo.xlsx",
+  rowNames=TRUE,
+  colnames=FALSE,
+  overwrite = TRUE,
+  asTable = FALSE
+)
+
 
 # ===========================
 # Clasificación internacional
